@@ -51,28 +51,30 @@ pdftotext -layout $pdf_file $txt_file
 echo 'Extracting blocks from the file...'
 block_codes=$(grep 'Код диагностики'  $txt_file | tr -s ' ' | cut -d' ' -f 6)
 
-echo 'Searching appropriate block file...'
-for i in $block_codes; do
+ok='\033[32mOK\033[0m'
+fail='\033[31mFAIL\033[m'
+echo
+echo "Searching $(echo $block_codes | tr ' ' "\n" | wc -l) appropriate block files..."
+for block_code in $block_codes; do
   sleep 0.05
-  pattern1=$BLOCKS_DIR/$i.smr-d
+  echo -n "$block_code - "
+  pattern1=$BLOCKS_DIR/$block_code.smr-d
   if [ -f $pattern1 ]; then
-    echo "File $pattern1 exists."
-    cp pattern1 $project_dir
+    echo -e "$ok - $pattern1"
+    cp $pattern1 $project_dir
   else
-    echo "File $pattern1 does not exist."
-    pattern2=$BLOCKS_DIR/$(echo $i| cut -d'_' -f 1,2).smr-d
+    pattern2=$BLOCKS_DIR/$(echo $block_code| cut -d'_' -f 1,2).smr-d
     if [ -f $pattern2 ]; then
-      echo "File $pattern2 exists."
-      #cp pattern2 $project_dir
+      echo -e "$ok - $pattern2"
+      cp $pattern2 $project_dir
     else
-      echo "File $pattern2 does not exist."
-      pattern3=$BLOCKS_DIR/$(echo $i| cut -d'_' -f 1).smr-d
+      pattern3=$BLOCKS_DIR/$(echo $block_code| cut -d'_' -f 1).smr-d
       if [ -f $pattern3 ]; then
-        echo "File $pattern3 exists."
-        #cp pattern3 $project_dir
+        echo -e "$ok - $pattern3"
+        cp $pattern3 $project_dir
       else
-        echo "File $pattern3 does not exist."
-        echo $i >> $lost_blocks_file
+        echo -e $fail
+        echo $block_code >> $lost_blocks_file
         echo $pattern1 >> $lost_blocks_file
         echo $pattern2 >> $lost_blocks_file
         echo $pattern3 >> $lost_blocks_file
