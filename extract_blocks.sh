@@ -65,17 +65,17 @@ echo "Searching $(echo $block_codes | tr ' ' "\n" | wc -l) appropriate block fil
 for block_code in $block_codes; do
   sleep 0.05
   echo -n "$block_code - "
-  pattern1=$BLOCKS_DIR/$block_code.smr-d
+  pattern1=$BLOCKS_DIR/$block_code.???-?
   if [ -f $pattern1 ]; then
     echo -e "$ok - $pattern1"
     cp $pattern1 $project_dir
   else
-    pattern2=$BLOCKS_DIR/$(echo $block_code| cut -d'_' -f 1,2).smr-d
+    pattern2=$BLOCKS_DIR/$(echo $block_code| cut -d'_' -f 1,2).???-?
     if [ -f $pattern2 ]; then
       echo -e "$ok - $pattern2"
       cp $pattern2 $project_dir
     else
-      pattern3=$BLOCKS_DIR/$(echo $block_code| cut -d'_' -f 1).smr-d
+      pattern3=$BLOCKS_DIR/$(echo $block_code| cut -d'_' -f 1).???-?
       if [ -f $pattern3 ]; then
         echo -e "$ok - $pattern3"
         cp $pattern3 $project_dir
@@ -89,3 +89,5 @@ for block_code in $block_codes; do
     fi
   fi
 done
+
+# Создать архив на вых
