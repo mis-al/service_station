@@ -56,7 +56,7 @@ fi
 pdftotext -layout $pdf_file $txt_file
 
 echo 'Extracting blocks from the file...'
-block_codes=$(grep 'Код диагностики'  $txt_file | tr -s ' ' | cut -d' ' -f 6)
+block_codes=$(grep "Код диагностики\|Diagnosis identifier"  $txt_file | tr -s ' ' | cut -d' ' -f 6)
 
 ok='\033[32mOK\033[0m'
 fail='\033[31mFAIL\033[m'
