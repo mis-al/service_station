@@ -63,7 +63,7 @@ fail='\033[31mFAIL\033[m'
 echo
 echo "Searching $(echo $block_codes | tr ' ' "\n" | wc -l) appropriate block files..."
 for block_code in $block_codes; do
-  sleep 0.05
+  #sleep 0.05
   echo -n "$block_code - "
   pattern1=$BLOCKS_DIR/$block_code.???-?
   if [ -f $pattern1 ]; then
